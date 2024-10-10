@@ -1,0 +1,379 @@
+<link rel="stylesheet" href="Index.css">
+
+<div id="app">
+    <header>
+        <button class="toggle-btn" id="toggle-btn">☰</button>
+        <h1>My ToDoListWebsite</h1>
+    </header>
+    <aside class="sidebar" id="sidebar">
+        <nav>
+            <ul>
+                <li><a href="#home">Sign-Up</a></li>
+                <li><a href="#about">Log-In</a></li>
+                <li><a href="#how">How</a></li>
+
+            </ul>
+        </nav>
+        <ul class="logout-list">
+            <li><a @click="logout">Log Out</a></li>
+        </ul>
+    </aside>
+    <main class="content" id="content">
+        <section id="Table">
+            <h2>Welcome {{ loggedInUserName }}</h2>
+            <div class="AddToDo">
+                <input id="newNotes" placeholder="AddToDo" class="search-input">&nbsp;
+                <button @click="addNewNotes()" class="search-button">AddTask</button>
+            </div>
+            <div id="task-list">
+                <h2>Task List</h2>
+                <ul id="task-list" v-for="note in notes" :key="note.id">
+                    <li>
+                        <b>{{ note.Task }}</b>&nbsp;
+                        <button @click="deleteTask(note.id)" class="remove-task">X</button>
+                    </li>
+                </ul>
+            </div>
+
+            <br><br>
+            <div id="about-us">
+                <h2>About Us</h2>
+                <p>Welcome to our Todo App! This website allows you to manage your tasks efficiently. You can sign up,
+                    log in, add tasks, and keep track of your daily activities. Our goal is to help you stay organized
+                    and productive.</p>
+            </div>
+
+            <!-- How It Works Section -->
+            <div id="how-it-works">
+                <h2>How It Works</h2>
+                <p>Using our Todo App is simple:</p>
+                <ol>
+                    <li>Sign up with your details using the Sign-Up form.</li>
+                    <li>Log in using your email and password.</li>
+                    <li>Once logged in, you can add new tasks using the Add Task button.</li>
+                    <li>Your tasks will be linked to your account, so you can see them whenever you log in.</li>
+                    <li>You can delete tasks once you complete them by clicking the Delete Task button.</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+
+<!-- Modal Boxes -->
+    <!-- Modal for Sign-Up -->
+    <div id="modal-home" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sign-Up</h2>
+            <div id="Sign-up">
+                <input id="newName" v-model="Name" placeholder="Name" class="search-input" />&nbsp;
+                <input id="newPhoneNumber" v-model="PhoneNumber" placeholder="PhoneNumber" class="search-input" />&nbsp;
+                <input id="newEmail" v-model="Email" placeholder="email" class="search-input" />&nbsp;
+                <input id="newPassword" v-model="Password" placeholder="Password" class="search-input" />&nbsp; <br>
+                <button @click="addNewUser" class="search-button">Sign-Up</button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for Sign-Up -->
+
+    <!-- Modal for Log-In -->
+    <div id="modal-about" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Log-In</h2>
+            <div id="log-in">
+                <input v-model="loginEmail" type="text" placeholder="Email" class="search-input" />&nbsp;
+                <input v-model="loginPassword" type="password" placeholder="Password" class="search-input" />&nbsp; <br>
+                <button @click="login" class="search-button">Log-In</button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for Log-In -->
+
+    <!-- Modal for How -->
+    <div id="modal-how" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>How the website Works</h2>
+            <div id="How">
+                <button @click="HIWB">How It Works</button>
+                <button @click="HTWTB">How They Work Together</button>
+                <div v-if="HIW">
+                    <h3>How it works</h3>
+                    <h4>Vue.js (Frontend)</h4>
+                    <ul>
+                        <b>Purpose:</b>
+                        <li>
+                            Vue.js is a progressive JavaScript framework used to build the frontend of the application.
+                            It allows for creating interactive user interfaces and single-page applications (SPAs).
+                        </li>
+                        <b>Features:</b>
+                        <li>
+                            Data Binding: Uses v-model for two-way data binding between form inputs and the Vue instance
+                            data.
+                        </li>
+                        <li>
+                            Event Handling: Uses @click to handle button clicks and call methods.
+                        </li>
+                        <li>
+                            Conditional Rendering: Uses directives like v-if to conditionally render parts of the UI
+                            based on the application state.
+                        </li>
+                        <li>
+                            HTTP Requests: Uses axios to send HTTP requests to the backend for CRUD operations (Create,
+                            Read, Update, Delete).
+                        </li>
+                    </ul>
+                    <h4>Node.js (Runtime Environment)</h4>
+                    <ul>
+                        <b>Purpose:</b>
+                        <li>
+                            Node.js is a JavaScript runtime that allows you to run JavaScript code on the server side.
+                            It is used here to run the Express.js server.
+                        </li>
+                        <b>Features:</b>
+                        <li>
+                            Non-blocking I/O: Efficient handling of multiple requests without blocking the server,
+                            making it ideal for I/O-heavy operations like database interactions.
+                        </li>
+                    </ul>
+                    <h4>Express.js (Backend Framework)</h4>
+                    <ul>
+                        <b>Purpose:</b>
+                        <li>
+                            Express.js is a web application framework for Node.js, designed for building web
+                            applications and APIs. It simplifies the process of building a server and handling routes.
+                        </li>
+                        <b>Features:</b>
+                        <li>
+                            Routing: Defines routes for handling different HTTP requests (GET, POST, DELETE).
+                        </li>
+                        <li>
+                            Middleware: Uses middleware like cors for handling cross-origin requests and multer for
+                            handling form data.
+                        </li>
+                        <li>
+                            Database Interaction: Interacts with MongoDB to perform CRUD operations.
+                        </li>
+                    </ul>
+                    <h4>MongoDB Atlas (Database)</h4>
+                    <ul>
+                        <b>Purpose:</b>
+                        <li>
+                            MongoDB Atlas is a cloud database service that provides a fully-managed MongoDB database,
+                            which is scalable and easy to use.
+                        </li>
+                        <b>Features:</b>
+                        <li>
+                            Document Storage: Stores data in flexible, JSON-like documents.
+                        </li>
+                        <li>
+                            Collections: Organizes data into collections (e.g., users, Todo).
+                        </li>
+                        <li>
+                            Cloud Hosting: Provides a managed database in the cloud, making it easy to scale and manage.
+                        </li>
+                    </ul>
+
+                </div>
+                <div v-if="HTWT">
+                    <h3>How They Work Together</h3>
+                    <h4>User Interaction with Vue.js:</h4>
+                    <ul>
+                        <li>
+                            The user interacts with the Vue.js frontend, which handles input and displays data.
+                        </li>
+                        <li>
+                            For example, when a user signs up, Vue.js collects the input data using v-model and sends it
+                            to the backend using axios.
+                        </li>
+                    </ul>
+                    <h4>HTTP Requests to Express.js:</h4>
+                    <ul>
+                        <li>
+                            The Vue.js frontend sends HTTP requests to the Express.js server.
+                        </li>
+                        <li>
+                            For example, the sign-up data is sent via a POST request to the /AddUsers endpoint.
+                        </li>
+                    </ul>
+                    <h4>Express.js Handling Requests:</h4>
+                    <ul>
+                        <li>
+                            The Express.js server receives the HTTP requests and processes them.
+                        </li>
+                        <li>
+                            It uses middleware to parse the request data and interacts with MongoDB for data operations.
+                        </li>
+                        <li>
+                            For example, the sign-up data is validated and then inserted into the users collection in
+                            MongoDB.
+                        </li>
+                    </ul>
+                    <h4>MongoDB Atlas Storing Data:</h4>
+                    <ul>
+                        <li>
+                            MongoDB Atlas stores the data in its cloud database.
+                        </li>
+                        <li>
+                            For example, new user data is stored in the users collection.
+                        </li>
+                    </ul>
+                    <h4>Retrieving and Displaying Data:</h4>
+                    <ul>
+                        <li>
+                            When data needs to be retrieved (e.g., fetching tasks), the Vue.js frontend sends a GET
+                            request to Express.js.
+                        </li>
+                        <li>
+                            Express.js queries MongoDB Atlas for the data and sends it back in the response.
+                        </li>
+                        <li>
+                            Vue.js then updates the UI to display the data.
+                        </li>
+                        <li>
+                            For example, when a user logs in, their tasks are fetched and displayed.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for How End -->
+<!-- Modal Boxes End -->
+
+</div>
+
+
+
+
+
+
+
+<script src="Index.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"
+    integrity="sha512-JSCFHhKDilTRRXe9ak/FJ28dcpOJxzQaCd3Xg8MyF6XFjODhy/YMCM8HW0TFDckNHWUewW+kfvhin43hKtJxAw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="module">
+    import { createApp, ref } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+
+    const API_URL = "http://localhost:3000/";
+
+    createApp({
+        data() {
+            return {
+                title: "Todo",
+                notes: [], // This will hold tasks associated with the logged-in user
+                Name: '',
+                PhoneNumber: '',
+                Email: '',
+                Password: '',
+                loginEmail: '',
+                loginPassword: '',
+                isLoggedIn: false,
+                loggedInUserId: '', // Store the logged-in user's ID here
+                loggedInUserName: '',
+                HIW: true,
+                HTWT: false,
+            };
+        },
+        methods: {
+            async refreshData() {
+                try {
+                    console.log("Fetching tasks for userId:", this.loggedInUserId);
+                    const response = await axios.get(`${API_URL}TodoWeb/todolist/GetNotes?userId=${this.loggedInUserId}`);
+                    console.log("GetNotes Response:", response.data);
+                    this.notes = response.data;
+                } catch (error) {
+                    console.error("Error fetching notes:", error);
+                }
+            },
+            async addNewNotes() {
+                try {
+                    const newNotes = document.getElementById("newNotes").value;
+                    const formData = new FormData();
+                    formData.append("newNotes", newNotes);
+                    formData.append("userId", this.loggedInUserId); // Send the userId to associate task with user
+
+                    const response = await axios.post(`${API_URL}TodoWeb/todolist/AddNotes`, formData);
+                    this.refreshData();
+                    alert(response.data); // Display response message
+                } catch (error) {
+                    console.error("Error adding new notes:", error);
+                }
+            },
+            async deleteTask(id) {
+                try {
+                    const response = await axios.delete(`${API_URL}TodoWeb/todolist/DeleteNotes?id=${id}`);
+                    this.refreshData();
+                    alert(response.data); // Display response message
+                } catch (error) {
+                    console.error("Error deleting task:", error);
+                }
+            },
+            async addNewUser() {
+                try {
+                    const formData = new FormData();
+                    formData.append("newName", this.Name);
+                    formData.append("newPhoneNumber", this.PhoneNumber);
+                    formData.append("newEmail", this.Email);
+                    formData.append("newPassword", this.Password);
+
+                    console.log([...formData.entries()]); // Log formData for debugging
+
+                    const response = await axios.post(`${API_URL}TodoWeb/todolist/AddUsers`, formData);
+                    this.refreshData();
+                    alert(response.data);
+
+                    this.Name = '';
+                    this.PhoneNumber = '';
+                    this.Email = '';
+                    this.Password = '';
+                } catch (error) {
+                    console.error("Error adding new user:", error);
+                }
+            },
+            async login() {
+                try {
+                    const formData = new FormData();
+                    formData.append("email", this.loginEmail);
+                    formData.append("password", this.loginPassword);
+
+                    const response = await axios.post(`${API_URL}TodoWeb/todolist/Login`, formData);
+
+                    if (response.data.success) {
+                        this.isLoggedIn = true;
+                        this.loggedInUserId = response.data.user._id; // Assuming user object has an _id field
+                        this.loggedInUserName = response.data.user.Name; // Assuming user object has a Name field
+                        alert(`Welcome, ${this.loggedInUserName}!`);
+                        this.refreshData(); // Refresh tasks associated with logged-in user
+                    } else {
+                        alert("Invalid credentials. Please try again.");
+                    }
+
+                    // Clear login fields
+                    this.loginEmail = '';
+                    this.loginPassword = '';
+                } catch (error) {
+                    console.error("Error logging in:", error);
+                }
+            },
+            logout() {
+                this.isLoggedIn = false;
+                this.loggedInUserId = '';
+                this.loggedInUserName = '';
+                this.notes = []; // Clear tasks associated with logged-in user
+            },
+            async HIWB() {
+                this.HIW = true
+                this.HTWT = false
+            },
+            async HTWTB() {
+                this.HIW = false
+                this.HTWT = true
+            }
+        },
+        mounted() {
+            this.refreshData();
+        }
+    }).mount('#app');
+</script>
